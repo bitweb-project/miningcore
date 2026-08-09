@@ -60,7 +60,7 @@ OBJECTS_ARGON2_CORE = \
 OBJECTS_ARGON2_REF  = argon2bitweb/argon2_ref.o
 
 # Pool-facing export wrapper
-OBJECTS_ARGON2_EXPORT = argon2_bitweb.o
+OBJECTS_ARGON2_EXPORT = argon2_bitweb.o sha512_dpowcoin.o argon2_dpowcoin.o
 
 # ---------- Architecture-specific Argon2 SIMD objects ---------------------
 
@@ -138,6 +138,10 @@ argon2bitweb/argon2_opt_neon.o: argon2bitweb/argon2_opt_neon.cpp
 endif
 
 # ---------- Export wrapper -----------------------------------------------
+
+sha512_dpowcoin.o: sha512_dpowcoin.cpp sha512_dpowcoin.h
+
+argon2_dpowcoin.o: argon2_dpowcoin.cpp sha512_dpowcoin.h
 
 argon2_bitweb.o: argon2_bitweb.cpp
 	$(CXX) $(CXXFLAGS) -c -o $@ $<

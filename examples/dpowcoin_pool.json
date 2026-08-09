@@ -1,0 +1,173 @@
+{
+  "logging": {
+    "level": "info",
+    "enableConsoleLog": true,
+    "enableConsoleColors": true,
+    "logFile": "/home/pool/miningcore/log/miningcore.log",
+    "logBaseDirectory": "/home/pool/miningcore/log",
+    "perPoolLogFile": true
+  },
+  "notifications": {
+    "enabled": false
+  },
+  "banning": {
+    "manager": "Integrated",
+    "banOnJunkReceive": true,
+    "banOnInvalidShares": true
+  },
+  "persistence": {
+    "postgres": {
+      "host": "127.0.0.1",
+      "port": 5432,
+      "user": "miningcore",
+      "password": "db_password",
+      "database": "miningcore"
+    }
+  },
+  "paymentProcessing": {
+    "enabled": true,
+    "interval": 600,
+    "coinbaseString": "Official Bitweb Pool",
+    "shareRecoveryFile": "recovered-shares.txt"
+  },
+  "api": {
+    "enabled": true,
+    "listenAddress": "127.0.0.1",
+    "port": 4000,
+    "adminPort": 4001,
+    "adminIpWhitelist": [ "127.0.0.1", "::1" ],
+    "noCors": true,
+    "rateLimiting": {
+      "disabled": true
+    }
+  },
+  "pools": [
+    {
+      "id": "dpc_pplns",
+      "enabled": true,
+      "miningDomains": [
+        "mining.bitwebcore.net"
+      ],
+      "coin": "dpowcoin",
+      "addressType": "Taproot",
+      "bechPrefix": "dpc",
+      "address": "taproot_dpc_wallet_address",
+      "rewardRecipients": [
+        {
+          "address": "taproot_dpc_wallet_address",
+          "percentage": 1.0
+        }
+      ],
+      "blockRefreshInterval": 400,
+      "jobRebroadcastTimeout": 59,
+      "clientConnectionTimeout": 600,
+      "banning": {
+        "enabled": true,
+        "time": 600,
+        "invalidPercent": 50,
+        "checkThreshold": 50
+      },
+      "daemons": [
+        {
+          "host": "127.0.0.1",
+          "port": 42002,
+          "user": "rpc_user",
+          "password": "rpc_password",
+          "extra": {
+            "zmqBlockNotifySocket": "tcp://127.0.0.1:44003"
+          }
+        }
+      ],
+      "ports": {
+        "3042": {
+          "listenAddress": "0.0.0.0",
+          "difficulty": 0.2,
+          "tls": true,
+          "tlsAuto": true,
+          "tlsPfxFile": "/home/pool/miningcore/ssl/pool.pfx",
+          "tlsPfxPassword": "",
+          "varDiff": {
+            "minDiff": 0.1,
+            "maxDiff": 50000,
+            "targetTime": 15,
+            "retargetTime": 90,
+            "variancePercent": 30
+          }
+        }
+      },
+      "paymentProcessing": {
+        "enabled": true,
+        "minimumPayment": 0.01,
+        "payoutScheme": "PPLNS",
+        "payoutSchemeConfig": {
+          "factor": 2.0
+        },
+        "walletPassword": "wallet_password",
+        "payoutMinConfirmationsEnabled": true,
+        "payoutMinConfirmations": 102
+      }
+    },
+    {
+      "id": "dpc_solo",
+      "enabled": true,
+      "miningDomains": [
+        "mining.bitwebcore.net"
+      ],
+      "coin": "dpowcoin",
+      "addressType": "Taproot",
+      "bechPrefix": "dpc",
+      "address": "taproot_dpc_wallet_address",
+      "rewardRecipients": [
+        {
+          "address": "taproot_dpc_wallet_address",
+          "percentage": 1
+        }
+      ],
+      "blockRefreshInterval": 400,
+      "jobRebroadcastTimeout": 59,
+      "clientConnectionTimeout": 600,
+      "banning": {
+        "enabled": true,
+        "time": 600,
+        "invalidPercent": 50,
+        "checkThreshold": 50
+      },
+      "daemons": [
+        {
+          "host": "127.0.0.1",
+          "port": 42002,
+          "user": "dpcpool",
+          "password": "rpc_password",
+          "extra": {
+            "zmqBlockNotifySocket": "tcp://127.0.0.1:44003"
+          }
+        }
+      ],
+      "ports": {
+        "3043": {
+          "listenAddress": "0.0.0.0",
+          "difficulty": 0.2,
+          "tls": true,
+          "tlsAuto": true,
+          "tlsPfxFile": "/home/pool/miningcore/ssl/pool.pfx",
+          "tlsPfxPassword": "",
+          "varDiff": {
+            "minDiff": 0.1,
+            "maxDiff": 50000,
+            "targetTime": 15,
+            "retargetTime": 90,
+            "variancePercent": 30
+          }
+        }
+      },
+      "paymentProcessing": {
+        "enabled": true,
+        "minimumPayment": 0.01,
+        "payoutScheme": "SOLO",
+        "walletPassword": "wallet_password",
+        "payoutMinConfirmationsEnabled": true,
+        "payoutMinConfirmations": 102
+      }
+    }
+  ]
+}

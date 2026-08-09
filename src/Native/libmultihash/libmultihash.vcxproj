@@ -115,6 +115,7 @@
     <ClInclude Include="sha256dt.h" />
     <ClInclude Include="sha256t.h" />
     <ClInclude Include="sha512_256.h" />
+    <ClInclude Include="sha512_dpowcoin.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="stdint.h" />
     <ClInclude Include="sysendian.h" />
@@ -141,6 +142,7 @@
     <!-- SHA -->
     <ClCompile Include="sha256dt.c" />
     <ClCompile Include="sha512_256.c" />
+    <ClCompile Include="sha512_dpowcoin.cpp" />
 
     <!-- Yespower -->
     <ClCompile Include="yespower\crypto\blake2b-yp.c" />
@@ -150,6 +152,10 @@
 
     <!-- Argon2 Bitweb -->
     <ClCompile Include="argon2_bitweb.cpp" />
+
+    <!-- Argon2 Dpowcoin (reuses argon2bitweb\ backend below; own SHA-512 in sha512_dpowcoin.cpp) -->
+    <ClCompile Include="argon2_dpowcoin.cpp" />
+
     <ClCompile Include="argon2bitweb\argon2.cpp" />
     <ClCompile Include="argon2bitweb\argon2_core.cpp" />
     <ClCompile Include="argon2bitweb\argon2_encoding.cpp" />

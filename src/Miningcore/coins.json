@@ -173,5 +173,39 @@
       "startHeight": 60000,
       "periodLength": 9300
     }
+  },
+  "dpowcoin": {
+    "name": "Dpowcoin",
+    "symbol": "DPC",
+    "family": "bitcoin",
+    "payoutDecimalPlaces": 8,
+    "website": "https://dpowcore.org/",
+    "github": "https://github.com/dpowcore-project/dpowcoin",
+    "twitter": "https://twitter.com/dpowcoin",
+    "market": "https://coinpaprika.com/coin/dpc-dpowcoin/",
+    "discord": "https://discord.gg/b9zkzAgUpH",
+    "telegram": "https://t.me/dpowcoin",
+    "coinbaseHasher": {
+      "hash": "sha256d"
+    },
+    "headerHasher": {
+      "hash": "dpowcoin",
+      "args": [
+        4
+      ]
+    },
+    "blockHasher": {
+      "hash": "reverse",
+      "args": [
+        {
+          "hash": "sha256d"
+        }
+      ]
+    },
+    "shareMultiplier": 65536,
+    "coinbaseMinConfirmations": 102,
+    "explorerBlockLink": "https://explorer.dpowcore.org/block/$height$",
+    "explorerTxLink": "https://explorer.dpowcore.org/tx/{0}",
+    "explorerAccountLink": "https://explorer.dpowcore.org/address/{0}"
   }
 }

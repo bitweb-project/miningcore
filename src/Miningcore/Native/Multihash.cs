@@ -39,4 +39,11 @@ public static unsafe class Multihash
     [DllImport("libmultihash", EntryPoint = "argon2_generic_export", CallingConvention = CallingConvention.Cdecl)]
     public static extern void argon2_generic(byte* input, void* output, uint inputLength,
         uint tCost, uint mCost, uint lanes, uint typeId, uint version);
+
+    // Argon2id Dpowcoin: 2-round, salt=SHA512(SHA512(header))->round1_out, t=2, lanes=2, v=0x13
+    // Round1 m=4096 KiB, Round2 m=32768 KiB (params baked into the native export)
+    // threads: execution parallelism only, NOT consensus-critical (identical output for any
+    // value in [1, lanes]=[1,2]) - configurable per-deployment via coins.json headerHasher.args.
+    [DllImport("libmultihash", EntryPoint = "argon2id_dpowcoin_export", CallingConvention = CallingConvention.Cdecl)]
+    public static extern void argon2id_dpowcoin(byte* input, void* output, uint inputLength, uint threads);
 }

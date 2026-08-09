@@ -102,6 +102,9 @@
     <ClInclude Include="sha512_256.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sha512_dpowcoin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 
   <!-- Yespower -->
@@ -156,6 +159,9 @@
     <ClCompile Include="sha512_256.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sha512_dpowcoin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 
   <!-- Yespower -->
@@ -177,6 +183,9 @@
   <!-- Argon2 Bitweb (core + SIMD) -->
   <ItemGroup>
     <ClCompile Include="argon2_bitweb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="argon2_dpowcoin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="argon2bitweb\argon2.cpp">
