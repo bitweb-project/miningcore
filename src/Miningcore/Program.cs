@@ -42,7 +42,6 @@ using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 using Newtonsoft.Json.Serialization;
 using NLog;
-using NLog.Conditions;
 using NLog.Config;
 using NLog.Extensions.Hosting;
 using NLog.Extensions.Logging;
@@ -739,27 +738,27 @@ public class Program : BackgroundService
                     };
 
                     target.RowHighlightingRules.Add(new ConsoleRowHighlightingRule(
-                    ConditionParser.ParseExpression("level == LogLevel.Trace"),
+                    "level == LogLevel.Trace",
                     ConsoleOutputColor.DarkMagenta, ConsoleOutputColor.NoChange));
 
                     target.RowHighlightingRules.Add(new ConsoleRowHighlightingRule(
-                    ConditionParser.ParseExpression("level == LogLevel.Debug"),
+                    "level == LogLevel.Debug",
                     ConsoleOutputColor.Gray, ConsoleOutputColor.NoChange));
 
                     target.RowHighlightingRules.Add(new ConsoleRowHighlightingRule(
-                    ConditionParser.ParseExpression("level == LogLevel.Info"),
+                    "level == LogLevel.Info",
                     ConsoleOutputColor.White, ConsoleOutputColor.NoChange));
 
                     target.RowHighlightingRules.Add(new ConsoleRowHighlightingRule(
-                    ConditionParser.ParseExpression("level == LogLevel.Warn"),
+                    "level == LogLevel.Warn",
                     ConsoleOutputColor.Yellow, ConsoleOutputColor.NoChange));
 
                     target.RowHighlightingRules.Add(new ConsoleRowHighlightingRule(
-                    ConditionParser.ParseExpression("level == LogLevel.Error"),
+                    "level == LogLevel.Error",
                     ConsoleOutputColor.Red, ConsoleOutputColor.NoChange));
 
                     target.RowHighlightingRules.Add(new ConsoleRowHighlightingRule(
-                    ConditionParser.ParseExpression("level == LogLevel.Fatal"),
+                    "level == LogLevel.Fatal",
                     ConsoleOutputColor.DarkRed, ConsoleOutputColor.White));
 
                     loggingConfig.AddTarget(target);
