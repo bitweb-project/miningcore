@@ -43,48 +43,48 @@
 
     <ItemGroup>
         <PackageReference Include="AspNetCoreRateLimit" Version="5.0.0" />
-        <PackageReference Include="Autofac" Version="9.1.0" />
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="11.0.0" />
-        <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.2" />
+        <PackageReference Include="Autofac" Version="9.3.2" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="11.0.2" />
+        <PackageReference Include="BouncyCastle.Cryptography" Version="2.7.0" />
         <PackageReference Include="CircularBuffer" Version="1.4.0" />
         <PackageReference Include="Dapper" Version="2.1.79" />
         <PackageReference Include="FluentValidation" Version="12.1.1" />
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
-        <PackageReference Include="GitVersion.MsBuild" Version="6.7.0">
+        <PackageReference Include="GitVersion.MsBuild" Version="6.8.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
-        <PackageReference Include="MailKit" Version="4.16.0" />
-        <PackageReference Include="Mapster" Version="10.0.7" />
-        <PackageReference Include="Mapster.DependencyInjection" Version="10.0.7" />
+        <PackageReference Include="JetBrains.Annotations" Version="2026.2.0" />
+        <PackageReference Include="MailKit" Version="4.17.0" />
+        <PackageReference Include="Mapster" Version="10.0.11" />
+        <PackageReference Include="Mapster.DependencyInjection" Version="10.0.11" />
         <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="5.1.0" />
-        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.11" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.11" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.11" />
         <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
-        <PackageReference Include="NBitcoin" Version="10.0.4" />
-        <PackageReference Include="NBitcoin.Secp256k1" Version="4.0.0" />
-        <PackageReference Include="NetMQ" Version="4.0.4.2" />
+        <PackageReference Include="NBitcoin" Version="10.0.9" />
+        <PackageReference Include="NBitcoin.Secp256k1" Version="4.0.1" />
+        <PackageReference Include="NetMQ" Version="4.0.4.3" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="Newtonsoft.Json.Schema" Version="4.0.1" />
-        <PackageReference Include="NLog" Version="6.1.3" />
-        <PackageReference Include="NLog.Extensions.Hosting" Version="6.1.3" />
-        <PackageReference Include="NLog.Extensions.Logging" Version="6.1.3" />
-        <PackageReference Include="Npgsql" Version="10.0.2" />
+        <PackageReference Include="NLog" Version="6.2.0" />
+        <PackageReference Include="NLog.Extensions.Hosting" Version="6.2.0" />
+        <PackageReference Include="NLog.Extensions.Logging" Version="6.2.0" />
+        <PackageReference Include="Npgsql" Version="10.0.3" />
         <PackageReference Include="NSwag.AspNetCore" Version="14.7.1" />
         <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="14.7.1" />
         <PackageReference Include="NSwag.MSBuild" Version="14.7.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Polly" Version="8.6.6" />
+        <PackageReference Include="Polly" Version="8.7.0" />
         <PackageReference Include="prometheus-net" Version="8.2.1" />
         <PackageReference Include="prometheus-net.AspNetCore" Version="8.2.1" />
-        <PackageReference Include="protobuf-net" Version="3.2.56" />
-        <PackageReference Include="System.Reactive" Version="6.1.0" />
-        <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.10" />
+        <PackageReference Include="protobuf-net" Version="3.3.21" />
+        <PackageReference Include="System.Reactive" Version="7.0.0" />
+        <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.11" />
     </ItemGroup>
 
     <ItemGroup>
