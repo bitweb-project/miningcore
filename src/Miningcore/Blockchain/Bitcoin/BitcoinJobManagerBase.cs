@@ -230,7 +230,7 @@ public abstract class BitcoinJobManagerBase<TJob> : JobManagerBase<TJob>
                 logger.Warn(() => $"Error(s) refreshing network stats: {string.Join(", ", errors.Select(y => y.Error.Message))}");
 
             // results[0]=GetMiningInfo and results[1]=GetNetworkInfo are mandatory.
-            // results[2]=GetNetworkHashPS is optional — already guarded by the null-check below.
+            // results[2]=GetNetworkHashPS is optional - already guarded by the null-check below.
             if(results[0].Error != null || results[1].Error != null)
                 return;
 
@@ -593,14 +593,46 @@ public abstract class BitcoinJobManagerBase<TJob> : JobManagerBase<TJob>
         base.Configure(pc, cc);
     }
 
-    public virtual async Task<bool> ValidateAddressAsync(string address, CancellationToken ct)
+    // Retry attempts for validateaddress RPC before giving up as Unknown.
+    protected virtual int AddressValidationMaxAttempts => 3;
+
+    // Delay between retry attempts.
+    protected virtual TimeSpan AddressValidationRetryDelay => TimeSpan.FromMilliseconds(500);
+
+    public virtual async Task<AddressValidationResult> ValidateAddressDetailedAsync(string address, CancellationToken ct)
     {
         if(string.IsNullOrEmpty(address))
-            return false;
+            return AddressValidationResult.Invalid;
 
-        var result = await rpc.ExecuteAsync<ValidateAddressResponse>(logger, BitcoinCommands.ValidateAddress, ct, new[] { address });
+        for(var attempt = 1; attempt <= AddressValidationMaxAttempts; attempt++)
+        {
+            var result = await rpc.ExecuteAsync<ValidateAddressResponse>(logger, BitcoinCommands.ValidateAddress, ct, new[] { address });
 
-        return result.Response is {IsValid: true};
+            // RPC succeeded, daemon gave a definitive answer, no retry needed.
+            if(result.Error == null && result.Response != null)
+                return result.Response.IsValid ? AddressValidationResult.Valid : AddressValidationResult.Invalid;
+
+            // RPC failed (timeout/connection error). Not proof address is invalid.
+            logger.Warn(() => $"validateaddress RPC failed for '{address}' (attempt {attempt}/{AddressValidationMaxAttempts}): {result.Error?.Message ?? "no response"}");
+
+            if(attempt < AddressValidationMaxAttempts)
+            {
+                try
+                {
+                    await Task.Delay(AddressValidationRetryDelay, ct);
+                }
+
+                catch(TaskCanceledException)
+                {
+                    break;
+                }
+            }
+        }
+
+        // All retries failed, no definitive answer from daemon.
+        logger.Warn(() => $"Unable to validate address '{address}' after {AddressValidationMaxAttempts} attempts, daemon unresponsive");
+
+        return AddressValidationResult.Unknown;
     }
 
     #endregion // API-Surface

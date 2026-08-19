@@ -105,7 +105,8 @@ public class BitcoinPool : PoolBase
         var workerName = split?.Skip(1).FirstOrDefault()?.Trim() ?? string.Empty;
 
         // assumes that minerName is an address
-        context.IsAuthorized = await manager.ValidateAddressAsync(minerName, ct);
+        var addressValidationResult = await manager.ValidateAddressDetailedAsync(minerName, ct);
+        context.IsAuthorized = addressValidationResult == AddressValidationResult.Valid;
         context.Miner = minerName;
         context.Worker = workerName;
 
@@ -160,8 +161,20 @@ public class BitcoinPool : PoolBase
 			await connection.NotifyAsync(BitcoinStratumMethods.SetDifficulty, new object[] { context.Difficulty });
         }
 
+        else if(addressValidationResult == AddressValidationResult.Unknown)
+        {
+            // Daemon did not respond after retries, not proof address is bad.
+            // Reject without ban so a valid miner can just reconnect.
+            logger.Warn(() => $"[{connection.ConnectionId}] Could not validate address '{minerName}' (daemon unresponsive), rejecting without ban");
+
+            await connection.RespondErrorAsync(StratumError.UnauthorizedWorker, "Address validation temporarily unavailable, please retry", request.Id, context.IsAuthorized);
+
+            Disconnect(connection);
+        }
+
         else
         {
+            // Daemon explicitly confirmed the address is invalid, safe to ban.
             await connection.RespondErrorAsync(StratumError.UnauthorizedWorker, "Authorization failed", request.Id, context.IsAuthorized);
 
             if(clusterConfig?.Banning?.BanOnLoginFailure is null or true)
