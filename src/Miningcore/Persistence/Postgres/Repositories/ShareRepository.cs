@@ -80,13 +80,6 @@ public class ShareRepository : IShareRepository
         return con.QuerySingleAsync<long>(new CommandDefinition(query, new { poolId, before }, tx, cancellationToken: ct));
     }
 
-    public Task<long> CountSharesByMinerAsync(IDbConnection con, IDbTransaction tx, string poolId, string miner, CancellationToken ct)
-    {
-        const string query = "SELECT count(*) FROM shares WHERE poolid = @poolId AND miner = @miner";
-
-        return con.QuerySingleAsync<long>(new CommandDefinition(query, new { poolId, miner}, tx, cancellationToken: ct));
-    }
-
     public Task<double?> GetEffortBetweenCreatedAsync(IDbConnection con, string poolId, double shareConst, DateTime start, DateTime end, CancellationToken ct)
     {
         // NOTE: shareConst is intentionally NOT multiplied into the query.
@@ -107,11 +100,22 @@ public class ShareRepository : IShareRepository
         return con.QuerySingleAsync<double?>(new CommandDefinition(query, new { poolId, miner, start, end }, cancellationToken: ct));
     }
 
-    public async Task DeleteSharesByMinerAsync(IDbConnection con, IDbTransaction tx, string poolId, string miner, CancellationToken ct)
+    public Task<long> CountSharesByMinerBeforeAsync(IDbConnection con, IDbTransaction tx, string poolId, string miner, DateTime before, CancellationToken ct)
     {
-        const string query = "DELETE FROM shares WHERE poolid = @poolId AND miner = @miner";
+        const string query = "SELECT count(*) FROM shares WHERE poolid = @poolId AND miner = @miner AND created <= @before";
 
-        await con.ExecuteAsync(new CommandDefinition(query, new { poolId, miner}, tx, cancellationToken: ct));
+        return con.QuerySingleAsync<long>(new CommandDefinition(query, new { poolId, miner, before }, tx, cancellationToken: ct));
+    }
+
+    public async Task DeleteSharesByMinerBeforeAsync(IDbConnection con, IDbTransaction tx, string poolId, string miner, DateTime before, CancellationToken ct)
+    {
+        // Bounded by 'created <= before' (the just-processed block's Created timestamp) so this
+        // never touches shares that arrived after this block — those belong to a later,
+        // not-yet-classified block by the same miner and are still needed for its own
+        // Effort/MinerEffort calculation and for the live hashrate window in StatsRecorder.
+        const string query = "DELETE FROM shares WHERE poolid = @poolId AND miner = @miner AND created <= @before";
+
+        await con.ExecuteAsync(new CommandDefinition(query, new { poolId, miner, before }, tx, cancellationToken: ct));
     }
 
     public async Task DeleteSharesBeforeAsync(IDbConnection con, IDbTransaction tx, string poolId, DateTime before, CancellationToken ct)

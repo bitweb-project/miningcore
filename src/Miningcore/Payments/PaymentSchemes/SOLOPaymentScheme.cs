@@ -53,15 +53,23 @@ public class SOLOPaymentScheme : IPayoutScheme
         }
 
         // delete discarded shares
+        // Bounded by shareCutOffDate (= this block's Created timestamp): shares that arrived
+        // AFTER this block belong to the miner's *next* round and must survive this cleanup.
+        // The old unbounded delete (by miner only, no date) wiped those out whenever this run
+        // classified more than one of the same miner's blocks together (e.g. after a batch of
+        // NewChainHeightNotification confirmations) — the earlier block's cleanup deleted the
+        // shares the later block still needed for its own Effort/MinerEffort calculation,
+        // permanently leaving it with a null ("--") effort, and briefly zeroing that miner's
+        // live hashrate stats in StatsRecorder until fresh shares accumulated again.
         if(shareCutOffDate.HasValue)
         {
-            var cutOffCount = await shareRepo.CountSharesByMinerAsync(con, tx, poolConfig.Id, block.Miner, ct);
+            var cutOffCount = await shareRepo.CountSharesByMinerBeforeAsync(con, tx, poolConfig.Id, block.Miner, shareCutOffDate.Value, ct);
 
             if(cutOffCount > 0)
             {
-                logger.Info(() => $"Deleting {cutOffCount} discarded shares for {block.Miner}");
+                logger.Info(() => $"Deleting {cutOffCount} discarded shares for {block.Miner} up to {shareCutOffDate.Value:O}");
 
-                await shareRepo.DeleteSharesByMinerAsync(con, tx, poolConfig.Id, block.Miner, ct);
+                await shareRepo.DeleteSharesByMinerBeforeAsync(con, tx, poolConfig.Id, block.Miner, shareCutOffDate.Value, ct);
             }
         }
     }
